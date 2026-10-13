@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101310">
+<title>Meu Cut — acompanhamento alimentar</title>
+<style>
+:root{--bg:#101310;--panel:#191d19;--panel2:#202620;--line:#303830;--text:#f1f4ee;--muted:#9da79c;--lime:#c7f36b;--lime-dark:#27351a;--orange:#f0b36c;--radius:22px}
+*{box-sizing:border-box} body{margin:0;background:radial-gradient(ellipse at top right,#20291b 0%,var(--bg) 44%);color:var(--text);font:15px/1.45 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
+button,input{font:inherit}button{cursor:pointer} .app{width:min(100%,760px);margin:0 auto;padding:18px 16px 100px}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:8px 2px 22px}.brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:-.04em;font-size:20px}.logo{width:36px;height:36px;border-radius:12px;background:var(--lime);color:#182010;display:grid;place-items:center;font-weight:950;font-size:18px}.pill{font-size:11px;color:var(--lime);border:1px solid #46563a;border-radius:99px;padding:6px 10px;letter-spacing:.08em;text-transform:uppercase}
+.hero{padding:22px;border:1px solid #384333;background:linear-gradient(135deg,#20291e,#171c17 72%);border-radius:28px;position:relative;overflow:hidden}.hero:after{content:"";position:absolute;width:180px;height:180px;border:1px solid #394632;border-radius:50%;right:-72px;top:-78px;box-shadow:0 0 0 22px #29352355,0 0 0 44px #29352322;pointer-events:none}.eyebrow{color:var(--lime);text-transform:uppercase;letter-spacing:.12em;font-size:11px;font-weight:800}.hero h1{font-size:clamp(28px,7vw,42px);line-height:1.04;letter-spacing:-.055em;margin:9px 0 8px;max-width:400px}.hero p{color:#b5beb0;margin:0;max-width:390px;font-size:13px}.hero-row{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;position:relative;z-index:1}.calories-big{margin-top:22px}.calories-big strong{font-size:36px;letter-spacing:-.06em}.calories-big span{color:var(--muted);font-size:12px}.progress-wrap{margin-top:13px}.progress-meta{display:flex;justify-content:space-between;font-size:11px;color:#c1c9bd;margin-bottom:7px}.progress{height:7px;border-radius:99px;background:#3a4336;overflow:hidden}.progress-fill{height:100%;width:0;background:var(--lime);border-radius:99px;transition:width .25s}
+.section-head{display:flex;justify-content:space-between;align-items:end;margin:26px 2px 12px;gap:12px}.section-head h2{font-size:19px;letter-spacing:-.04em;margin:0}.section-head p{margin:3px 0 0;color:var(--muted);font-size:12px}.week-strip{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:14px 0 22px}.day-btn{background:#191d19;border:1px solid var(--line);border-radius:15px;color:var(--muted);padding:10px 2px 9px;min-width:0}.day-btn span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.06em}.day-btn b{display:block;margin-top:5px;font-size:16px;color:var(--text)}.day-btn.active{background:var(--lime);border-color:var(--lime);color:#29331e}.day-btn.active b{color:#182010}.day-btn.today:not(.active){border-color:#6a824d}
+.summary-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}.mini-stat{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:14px}.mini-stat span{font-size:11px;color:var(--muted);display:block}.mini-stat strong{font-size:21px;letter-spacing:-.04em;display:block;margin-top:4px}.mini-stat small{font-size:11px;color:var(--lime)}
+.meals{display:grid;gap:12px}.meal-card{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:16px;transition:border-color .2s}.meal-card.done{border-color:#6b8a4c}.meal-top{display:flex;align-items:flex-start;gap:12px}.meal-icon{width:42px;height:42px;flex:0 0 42px;border-radius:14px;background:var(--panel2);display:grid;place-items:center;font-size:20px}.meal-title{flex:1;min-width:0}.meal-title h3{margin:1px 0 3px;font-size:15px}.meal-title p{margin:0;color:var(--muted);font-size:11px}.kcal{font-weight:800;font-size:16px;white-space:nowrap;letter-spacing:-.03em}.kcal small{font-size:10px;color:var(--muted);font-weight:500;letter-spacing:0}.meal-content{margin:14px 0 0 54px}.meal-content ul{padding-left:17px;margin:0;color:#dce2d8;font-size:13px}.meal-content li{padding:2px 0}.meal-actions{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 0 54px}.btn{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:12px;padding:10px 12px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:7px}.btn.primary{background:var(--lime);color:#1b2512;border-color:var(--lime)}.btn.done-btn{border-color:#50663b;color:var(--lime)}.btn:active{transform:scale(.98)}.alt-note{display:none;margin:12px 0 0 54px;padding:11px 12px;background:#242b21;border-radius:12px;font-size:12px;color:#d3ddca}.alt-note.show{display:block}.alt-note strong{color:var(--lime)}.bottom-note{margin-top:20px;padding:16px;border:1px dashed #394336;border-radius:18px;color:var(--muted);font-size:12px}.bottom-note b{color:var(--text)}.bottom-nav{position:fixed;bottom:0;left:0;right:0;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:#101310eF;backdrop-filter:blur(18px);border-top:1px solid #2b322b;z-index:5}.nav-inner{max-width:760px;margin:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.nav-btn{background:transparent;color:var(--muted);border:0;border-radius:12px;padding:8px 4px;font-size:11px}.nav-btn span{display:block;font-size:18px;margin-bottom:3px}.nav-btn.active{background:#242d20;color:var(--lime)}.view{display:none}.view.active{display:block}.settings-card{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:18px;margin-top:12px}.settings-card h3{margin:0 0 8px}.settings-card p{color:var(--muted);font-size:13px}.field{display:grid;gap:7px;margin:14px 0}.field label{font-size:12px;color:var(--muted)}.field input{width:100%;background:#101310;border:1px solid var(--line);border-radius:12px;color:var(--text);padding:12px}.history-day{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding:13px 0}.history-day:last-child{border:0}.history-day span{font-size:13px}.history-day small{display:block;color:var(--muted);font-size:11px;margin-top:3px}.history-day strong{font-size:14px}.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--lime);color:#172010;border-radius:99px;padding:10px 16px;font-size:12px;font-weight:800;opacity:0;pointer-events:none;transition:opacity .2s;z-index:10;white-space:nowrap}.toast.show{opacity:1}.empty{color:var(--muted);font-size:13px;padding:12px 0}
+@media(min-width:600px){.app{padding-top:26px}.hero{padding:28px}.meals{grid-template-columns:1fr 1fr}.meal-card:last-child{grid-column:1/-1}.meal-card:last-child .meal-content{columns:2}.meal-card:last-child .meal-actions{margin-top:12px}}
+@media(max-width:370px){.app{padding-left:11px;padding-right:11px}.hero{padding:18px}.meal-card{padding:13px}.meal-content,.meal-actions,.alt-note{margin-left:0}.meal-icon{width:36px;height:36px;flex-basis:36px}.kcal{font-size:14px}.btn{padding:9px 10px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand"><div class="logo">MC</div> meu cut<span style="color:var(--lime)">.</span></div>
+    <div class="pill">84 kg · foco em secar</div>
+  </header>
+  <section class="hero">
+    <div class="eyebrow" id="heroDate">SEU PLANO DE HOJE</div>
+    <div class="hero-row">
+      <div>
+        <h1 id="heroDay">Seu dia.<br>Sua meta.</h1>
+        <p>Consistência primeiro. Uma refeição de cada vez.</p>
+      </div>
+    </div>
+    <div class="calories-big"><strong id="consumed">0</strong> <span>/ <b id="dailyGoalText">2.500</b> kcal consumidas</span></div>
+    <div class="progress-wrap"><div class="progress-meta"><span>Progresso do dia</span><span id="progressText">0%</span></div><div class="progress"><div class="progress-fill" id="progressFill"></div></div></div>
+  </section>
+
+  <div class="section-head"><div><h2>Semana</h2><p>Escolha um dia para ver as refeições</p></div><button class="btn" id="todayBtn">Hoje ↗</button></div>
+  <div class="week-strip" id="weekStrip"></div>
+
+  <div id="dayView" class="view active">
+    <div class="summary-row">
+      <div class="mini-stat"><span>Meta do dia</span><strong id="goalStat">2.500 kcal</strong><small>Déficit moderado estimado</small></div>
+      <div class="mini-stat"><span>Refeições concluídas</span><strong id="doneStat">0 de 5</strong><small id="remainingStat">2.500 kcal restantes</small></div>
+    </div>
+    <div class="section-head"><div><h2 id="mealsHeading">Suas refeições</h2><p>Marque o que comeu ou sorteie uma troca</p></div><button class="btn" id="resetDayBtn">↻ Resetar</button></div>
+    <div class="meals" id="meals"></div>
+    <div class="bottom-note"><b>Como funciona:</b> toque em “Trocar opção” para sortear uma alternativa com calorias semelhantes. Suas escolhas e refeições concluídas ficam salvas neste dispositivo.</div>
+  </div>
+
+  <div id="historyView" class="view">
+    <div class="section-head"><div><h2>Seu histórico</h2><p>Resumo das refeições marcadas como concluídas</p></div></div>
+    <div class="settings-card" id="historyList"></div>
+    <div class="bottom-note">O histórico é salvo apenas neste navegador. Se limpar os dados do navegador, as informações poderão ser apagadas.</div>
+  </div>
+
+  <div id="settingsView" class="view">
+    <div class="section-head"><div><h2>Seu plano</h2><p>Ajuste a meta diária</p></div></div>
+    <div class="settings-card">
+      <h3>Meta de calorias</h3>
+      <p>Comece com 2.500 kcal e acompanhe a tendência do peso por algumas semanas. A meta é uma estimativa, não uma prescrição médica.</p>
+      <div class="field"><label for="goalInput">Calorias por dia</label><input id="goalInput" type="number" min="1000" max="6000" step="50" value="2500"></div>
+      <button class="btn primary" id="saveGoalBtn">Salvar meta</button>
+    </div>
+    <div class="settings-card">
+      <h3>Dados do plano</h3>
+      <p>Homem · 25–34 anos · 84 kg · 180 cm · musculação 4–5 vezes por semana.</p>
+      <p>Meta inicial: preservar massa muscular enquanto reduz gordura, priorizando proteína, treino de força e recuperação.</p>
+      <button class="btn" id="exportBtn">Exportar meu acompanhamento</button>
+      <button class="btn" id="clearBtn" style="margin-top:8px">Apagar dados salvos</button>
+    </div>
+  </div>
+</div>
+
+<nav class="bottom-nav"><div class="nav-inner">
+  <button class="nav-btn active" data-view="dayView"><span>◷</span>Hoje</button>
+  <button class="nav-btn" data-view="historyView"><span>▤</span>Histórico</button>
+  <button class="nav-btn" data-view="settingsView"><span>⚙</span>Plano</button>
+</div></nav>
+<div class="toast" id="toast">Salvo!</div>
+<script>
+const dayNames=['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
+const shortNames=['DOM','SEG','TER','QUA','QUI','SEX','SÁB'];
+const mealTemplates=[
+[
+{name:'Café da manhã',icon:'☀️',kcal:450,items:['3 ovos mexidos','Pão integral (60 g)','1 banana média','Café sem açúcar'],alts:[
+{items:['Aveia (50 g)','Leite semidesnatado (200 ml)','1 banana','2 ovos cozidos'],kcal:450},
+{items:['Tapioca (60 g de goma)','2 ovos','Queijo minas (30 g)','Mamão (150 g)'],kcal:450},
+{items:['Iogurte natural (170 g)','Aveia (40 g)','1 banana','2 ovos'],kcal:450}]},
+{name:'Lanche da manhã',icon:'🍓',kcal:250,items:['Iogurte proteico (170 g)','Aveia (20 g)','Morangos (100 g)'],alts:[
+{items:['1 maçã','Castanhas (15 g)','Iogurte natural (170 g)'],kcal:250},
+{items:['1 banana','Pasta de amendoim (15 g)','Iogurte natural (170 g)'],kcal:250},
+{items:['Iogurte proteico (170 g)','Granola (20 g)','1 kiwi'],kcal:250}]},
+{name:'Almoço',icon:'🍛',kcal:700,items:['Frango grelhado (180 g)','Arroz cozido (180 g)','Feijão (100 g)','Salada e legumes (200 g)','Azeite (5 g)','1 laranja'],alts:[
+{items:['Patinho magro (180 g)','Batata inglesa cozida (250 g)','Feijão (100 g)','Salada'],kcal:700},
+{items:['Tilápia grelhada (200 g)','Arroz cozido (180 g)','Feijão (120 g)','Legumes','Azeite (5 g)'],kcal:700},
+{items:['Frango grelhado (180 g)','Arroz cozido (160 g)','Feijão (120 g)','Abóbora e salada','Azeite (5 g)'],kcal:700}]},
+{name:'Lanche da tarde',icon:'🥪',kcal:350,items:['Pão integral (60 g)','Atum em água (100 g)','Requeijão light (15 g)','1 fruta pequena'],alts:[
+{items:['Whey protein (30 g)','Leite semidesnatado (200 ml)','1 banana pequena','Aveia (10 g)'],kcal:350},
+{items:['Pão integral (60 g)','Frango desfiado (80 g)','Queijo minas (20 g)'],kcal:350},
+{items:['Iogurte proteico (170 g)','Aveia (30 g)','1 banana','10 g de castanhas'],kcal:350}]},
+{name:'Jantar',icon:'🌙',kcal:750,items:['Tilápia grelhada (200 g)','Batata-doce cozida (300 g)','Feijão (100 g)','Brócolis e cenoura (200 g)','Azeite (10 g)'],alts:[
+{items:['Frango grelhado (180 g)','Arroz cozido (180 g)','Feijão (100 g)','Legumes','Azeite (5 g)'],kcal:750},
+{items:['Patinho magro (180 g)','Macarrão cozido (200 g)','Molho de tomate (100 g)','Parmesão (10 g)','Salada'],kcal:750},
+{items:['Hambúrguer caseiro de patinho (180 g de carne crua)','Pão de hambúrguer (70 g)','Queijo (20 g)','Batata assada (200 g)','Salada'],kcal:750}]}
+],
+[
+{name:'Café da manhã',icon:'☀️',kcal:450,items:['Aveia (50 g)','Leite semidesnatado (200 ml)','1 banana','2 ovos cozidos'],alts:[
+{items:['Pão integral (60 g)','3 ovos','Mamão (150 g)'],kcal:450},
+{items:['Tapioca (60 g de goma)','3 ovos','Queijo minas (20 g)'],kcal:450},
+{items:['Iogurte natural (170 g)','Aveia (40 g)','1 banana','2 ovos'],kcal:450}]},
+{name:'Lanche da manhã',icon:'🍎',kcal:250,items:['1 maçã','Castanhas (15 g)','Iogurte proteico (100–120 g)'],alts:[
+{items:['1 banana','Iogurte natural (170 g)','Pasta de amendoim (10 g)'],kcal:250},
+{items:['Iogurte proteico (170 g)','Granola (20 g)','1 kiwi'],kcal:250},
+{items:['1 pera','Castanhas (15 g)','Queijo minas (30 g)'],kcal:250}]},
+{name:'Almoço',icon:'🍲',kcal:700,items:['Patinho moído magro (180 g)','Arroz cozido (180 g)','Feijão (100 g)','Abóbora (150 g)','Salada com azeite (5 g)','1 mexerica'],alts:[
+{items:['Frango grelhado (180 g)','Arroz cozido (180 g)','Feijão (120 g)','Salada','Azeite (5 g)'],kcal:700},
+{items:['Tilápia (200 g)','Batata-doce (250 g)','Feijão (100 g)','Salada com azeite (5 g)'],kcal:700},
+{items:['Patinho grelhado (160 g)','Arroz cozido (160 g)','Feijão (100 g)','Legumes','1 fruta'],kcal:700}]},
+{name:'Lanche da tarde',icon:'🥤',kcal:350,items:['Whey protein (30 g)','Leite semidesnatado (200 ml)','1 banana','Aveia (15 g)'],alts:[
+{items:['Pão integral (60 g)','Frango desfiado (80 g)','Queijo minas (20 g)'],kcal:350},
+{items:['Pão integral (60 g)','Atum em água (100 g)','Requeijão light (15 g)'],kcal:350},
+{items:['Iogurte proteico (170 g)','Aveia (30 g)','1 banana','10 g de castanhas'],kcal:350}]},
+{name:'Jantar',icon:'🌙',kcal:750,items:['Frango grelhado (180 g)','Macarrão cozido (200 g)','Molho de tomate (100 g)','Parmesão (10 g)','Legumes (150 g)','Azeite (5 g)'],alts:[
+{items:['Patinho magro (180 g)','Batata assada (250 g)','Salada','Azeite (5 g)'],kcal:750},
+{items:['Tilápia grelhada (200 g)','Arroz cozido (180 g)','Feijão (100 g)','Legumes','Azeite (5 g)'],kcal:750},
+{items:['Frango grelhado (180 g)','Arroz cozido (180 g)','Feijão (100 g)','Legumes','Azeite (5 g)'],kcal:750}]}
+],
+[
+{name:'Café da manhã',icon:'☀️',kcal:450,items:['Tapioca (60 g de goma)','3 ovos','Queijo minas (20 g)','Mamão (100 g)'],alts:[
+{items:['Pão integral (60 g)','2 ovos','Cottage (40 g)','1 banana pequena'],kcal:450},
+{items:['Aveia (50 g)','Leite (200 ml)','1 banana','2 ovos'],kcal:450},
+{items:['Tapioca (60 g de goma)','2 ovos','Queijo minas (30 g)','1 banana pequena'],kcal:450}]},
+{name:'Lanche da manhã',icon:'🥝',kcal:250,items:['Iogurte proteico (170 g)','Granola (20 g)','1 kiwi'],alts:[
+{items:['Leite (200 ml)','1 banana pequena','Amendoim (15 g)'],kcal:250},
+{items:['1 maçã','Castanhas (15 g)','Iogurte natural (170 g)'],kcal:250},
+{items:['Iogurte proteico (170 g)','Aveia (20 g)','Morangos (100 g)'],kcal:250}]},
+{name:'Almoço',icon:'🍛',kcal:700,items:['Frango grelhado (180 g)','Arroz cozido (180 g)','Feijão (120 g)','Legumes (150 g)','Azeite (5 g)','1 fatia de abacaxi'],alts:[
+{items:['Tilápia (200 g)','Batata-doce (250 g)','Feijão (100 g)','Salada com azeite (5 g)'],kcal:700},
+{items:['Patinho (180 g)','Arroz (160 g)','Feijão (100 g)','Legumes e salada'],kcal:700},
+{items:['Frango grelhado (180 g)','Arroz (180 g)','Feijão (100 g)','Salada e azeite (5 g)'],kcal:700}]},
+{name:'Lanche da tarde',icon:'🥪',kcal:350,items:['Pão integral (60 g)','Cottage (80 g)','1 banana','1 ovo cozido'],alts:[
+{items:['Whey protein (30 g)','Leite (200 ml)','Aveia (20 g)','Morangos (100 g)'],kcal:350},
+{items:['Pão integral (60 g)','Atum (100 g)','Requeijão light (15 g)'],kcal:350},
+{items:['Pão integral (60 g)','Frango desfiado (80 g)','Queijo minas (20 g)'],kcal:350}]},
+{name:'Jantar',icon:'🌙',kcal:750,items:['Patinho em tiras (180 g)','Arroz cozido (180 g)','Feijão (100 g)','Brócolis e cenoura (200 g)','Azeite (5 g)'],alts:[
+{items:['Frango grelhado (200 g)','Mandioca cozida (250 g)','Salada','Azeite (5 g)'],kcal:750},
+{items:['Tilápia (200 g)','Arroz (180 g)','Feijão (100 g)','Legumes','Azeite (5 g)'],kcal:750},
+{items:['Patinho (180 g)','Macarrão cozido (200 g)','Molho de tomate (100 g)','Salada'],kcal:750}]}
+],
+];
+function clone(x){return JSON.parse(JSON.stringify(x))}
+function createWeek(){
+  const week=[];
+  for(let d=0;d<7;d++){
+    const base=clone(mealTemplates[d%3]);
+    if(d===3){base[0]={name:'Café da manhã',icon:'🍳',kcal:450,items:['2 ovos','Pão integral (60 g)','Queijo minas (30 g)','1 banana pequena'],alts:[{items:['Aveia (50 g)','Leite (200 ml)','1 banana','2 claras'],kcal:450},{items:['Tapioca (60 g)','3 ovos','Mamão (100 g)'],kcal:450},{items:['Iogurte (170 g)','Aveia (40 g)','1 banana','2 ovos'],kcal:450}]}}
+    if(d===4){base[4]={name:'Jantar',icon:'🍔',kcal:750,items:['Hambúrguer caseiro de patinho (180 g de carne crua)','Pão de hambúrguer (70 g)','Queijo (20 g)','Salada','Batata assada (200 g)','Molho de iogurte (30 g)'],alts:[{items:['Frango grelhado (180 g)','Arroz (180 g)','Feijão (100 g)','Legumes','Azeite (5 g)'],kcal:750},{items:['Macarrão cozido (200 g)','Frango (180 g)','Molho de tomate (100 g)','Parmesão (10 g)'],kcal:750},{items:['Patinho (180 g)','Batata assada (250 g)','Feijão (100 g)','Salada'],kcal:750}]}}
+    if(d===5){base[4]={name:'Jantar',icon:'🌙',kcal:750,items:['Frango grelhado (180 g)','Batata-doce cozida (300 g)','Feijão (100 g)','Legumes (200 g)','Azeite (10 g)'],alts:[{items:['Patinho (180 g)','Arroz (180 g)','Feijão (100 g)','Salada'],kcal:750},{items:['Tilápia (200 g)','Batata inglesa (300 g)','Feijão (100 g)','Legumes'],kcal:750},{items:['Macarrão cozido (200 g)','Frango (180 g)','Molho de tomate (100 g)','Parmesão (10 g)'],kcal:750}]}}
+    week.push(base.map(m=>({...m,done:false,altIndex:-1})));
+  }
+  return week;
+}
+const todayIndex=new Date().getDay();
+let selectedDay=todayIndex, goal=2500, week=createWeek();
+const STORAGE='meuCutV1';
+function load(){try{const s=JSON.parse(localStorage.getItem(STORAGE)||'null');if(s){goal=s.goal||2500;if(Array.isArray(s.week)&&s.week.length===7)week=s.week}}catch(e){}}
+function save(){try{localStorage.setItem(STORAGE,JSON.stringify({goal,week}))}catch(e){}}
+function fmt(n){return Math.round(n).toLocaleString('pt-BR')}
+function dayTotal(d){return week[d].reduce((sum,m)=>sum+(m.done?m.kcal:0),0)}
+function plannedTotal(d){return week[d].reduce((sum,m)=>sum+m.kcal,0)}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(showToast.timer);showToast.timer=setTimeout(()=>t.classList.remove('show'),1700)}
+function renderWeek(){
+ const strip=document.getElementById('weekStrip');strip.innerHTML='';
+ const now=new Date();
+ for(let d=0;d<7;d++){const date=new Date(now);date.setDate(now.getDate()+((d-todayIndex+7)%7));const b=document.createElement('button');b.className='day-btn'+(d===selectedDay?' active':'')+(d===todayIndex?' today':'');b.innerHTML=`<span>${shortNames[d]}</span><b>${date.getDate()}</b>`;b.onclick=()=>{selectedDay=d;render()};strip.appendChild(b)}
+}
+function renderMeals(){
+ const root=document.getElementById('meals');root.innerHTML='';
+ week[selectedDay].forEach((m,i)=>{
+  const activeItems=m.altIndex>=0&&m.alts[m.altIndex]?m.alts[m.altIndex].items:m.items;
+  const card=document.createElement('article');card.className='meal-card'+(m.done?' done':'');
+  card.innerHTML=`<div class="meal-top"><div class="meal-icon">${m.icon}</div><div class="meal-title"><h3>${escapeHtml(m.name)}</h3><p>${m.done?'Refeição marcada como concluída':'Plano alimentar'}</p></div><div class="kcal">${fmt(m.kcal)} <small>kcal</small></div></div><div class="meal-content"><ul>${activeItems.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul></div><div class="meal-actions"><button class="btn ${m.done?'done-btn':''}" data-action="done">${m.done?'✓ Comi isso':'○ Marcar como comido'}</button><button class="btn primary" data-action="swap">⤨ Trocar opção</button></div><div class="alt-note ${m.altIndex>=0?'show':''}">${m.altIndex>=0?`<strong>Opção alternativa ${m.altIndex+1}</strong> · calorias mantidas próximas da meta.`:''}</div>`;
+  card.querySelector('[data-action="done"]').onclick=()=>{m.done=!m.done;save();render();showToast(m.done?'Refeição registrada':'Registro desfeito')};
+  card.querySelector('[data-action="swap"]').onclick=()=>{
+    const current=m.altIndex;
+    let next=Math.floor(Math.random()*m.alts.length);
+    if(m.alts.length>1&&next===current)next=(next+1+Math.floor(Math.random()*(m.alts.length-1)))%m.alts.length;
+    m.altIndex=next;save();renderMeals();renderStats();showToast('Opção trocada · calorias semelhantes');
+  };
+  root.appendChild(card);
+ });
+}
+function renderStats(){
+ const consumed=dayTotal(selectedDay),planned=plannedTotal(selectedDay),done=week[selectedDay].filter(m=>m.done).length;
+ document.getElementById('consumed').textContent=fmt(consumed);
+ document.getElementById('dailyGoalText').textContent=fmt(goal);
+ document.getElementById('goalStat').textContent=fmt(goal)+' kcal';
+ document.getElementById('doneStat').textContent=done+' de 5';
+ document.getElementById('remainingStat').textContent=fmt(Math.max(0,goal-consumed))+' kcal restantes';
+ document.getElementById('progressText').textContent=Math.min(100,Math.round(consumed/goal*100))+'%';
+ document.getElementById('progressFill').style.width=Math.min(100,consumed/goal*100)+'%';
+ document.getElementById('heroDate').textContent=selectedDay===todayIndex?'SEU PLANO DE HOJE':'SEU PLANO · '+dayNames[selectedDay].toUpperCase();
+ document.getElementById('heroDay').innerHTML=selectedDay===todayIndex?'Seu dia.<br>Sua meta.':dayNames[selectedDay]+'.<br>Vamos nessa.';
+ document.getElementById('mealsHeading').textContent='Refeições de '+dayNames[selectedDay];
+}
+function renderHistory(){
+ const root=document.getElementById('historyList');root.innerHTML='';
+ dayNames.forEach((name,d)=>{const done=week[d].filter(m=>m.done).length;const kcal=dayTotal(d);const row=document.createElement('div');row.className='history-day';row.innerHTML=`<span>${name}<small>${done} de 5 refeições concluídas</small></span><strong>${fmt(kcal)} kcal</strong>`;row.onclick=()=>{selectedDay=d;setView('dayView');render()};root.appendChild(row)});
+}
+function render(){renderWeek();renderStats();renderMeals();renderHistory();document.getElementById('goalInput').value=goal}
+function setView(id){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.view===id));window.scrollTo({top:0,behavior:'smooth'})}
+document.querySelectorAll('.nav-btn').forEach(b=>b.onclick=()=>setView(b.dataset.view));
+document.getElementById('todayBtn').onclick=()=>{selectedDay=todayIndex;setView('dayView');render()};
+document.getElementById('resetDayBtn').onclick=()=>{if(confirm('Desmarcar as refeições deste dia e voltar às opções originais?')){week[selectedDay].forEach(m=>{m.done=false;m.altIndex=-1});save();render();showToast('Dia reiniciado')}};
+document.getElementById('saveGoalBtn').onclick=()=>{const v=Number(document.getElementById('goalInput').value);if(v<1000||v>6000||!Number.isFinite(v)){showToast('Digite uma meta entre 1.000 e 6.000');return}goal=v;save();render();showToast('Meta atualizada')};
+document.getElementById('exportBtn').onclick=()=>{const data={exportadoEm:new Date().toISOString(),metaDiaria:goal,semana:dayNames.map((day,d)=>({dia:day,caloriasConsumidas:dayTotal(d),refeicoes:week[d].map(m=>({nome:m.name,calorias:m.kcal,concluida:m.done,itens:m.altIndex>=0?m.alts[m.altIndex].items:m.items}))}))};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='meu-cut-acompanhamento.json';a.click();URL.revokeObjectURL(url);showToast('Arquivo exportado')};
+document.getElementById('clearBtn').onclick=()=>{if(confirm('Apagar meta, refeições marcadas e opções salvas neste navegador?')){localStorage.removeItem(STORAGE);goal=2500;week=createWeek();selectedDay=todayIndex;render();showToast('Dados apagados')}};
+load();render();
+</script>
+</body>
+</html>
